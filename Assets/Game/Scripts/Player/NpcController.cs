@@ -10,9 +10,31 @@ namespace Game.Scripts.Player
     {
         [SerializeField] private NavMeshAgent agent;
 
-        private GolfBall _currentTarget;
+        private NavMeshPath _path;
+
+        private void Awake()
+        {
+            _path = new NavMeshPath();
+        }
         
-        private void SetTarget(GolfBall target)
+        public float CalculateDistanceToTarget(Vector3 targetPos)
+        {
+            agent.CalculatePath(targetPos, _path);
+            
+            float pathLength = 0f;
+            
+            if (_path.status == NavMeshPathStatus.PathComplete)
+            {
+                for (int i = 1; i < _path.corners.Length; i++)
+                {
+                    pathLength += Vector3.Distance(_path.corners[i - 1], _path.corners[i]);
+                }
+            }
+
+            return pathLength;
+        }
+
+        public void SetTarget(GolfBall target)
         {
             agent.SetDestination(target.GetPosition());
         }

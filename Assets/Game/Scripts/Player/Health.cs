@@ -5,19 +5,17 @@ namespace Game.Scripts.Player
 {
     public sealed class Health : MonoBehaviour
     {
-        [SerializeField] private float health = 100f;
+        [SerializeField] [Range(1f, 100f)] private float health = 100f;
+        public event EventHandler OnDeath;
 
         private const float HEALTH_DECREASE_DELTA = 1.5f;
         private const float HEALTH_DECREASE_DELTA_SECONDS = 1f;
         
         private float _currentHealth;
         private float _currentDecreaseDeltaSeconds;
-        
-        public event EventHandler OnDeath;
 
         private void Awake()
         {
-            _currentHealth = health;
             _currentDecreaseDeltaSeconds = HEALTH_DECREASE_DELTA_SECONDS;
         }
 
@@ -36,6 +34,11 @@ namespace Game.Scripts.Player
             {
                 Die();
             }
+        }
+
+        public float GetCurrentHealthPercentage()
+        {
+            return _currentHealth / health;
         }
 
         private void Die()
