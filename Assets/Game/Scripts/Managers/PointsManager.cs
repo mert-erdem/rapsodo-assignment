@@ -17,11 +17,11 @@ namespace Game.Scripts.Managers
             },
             {
                 GolfBallLevel.Moderate,
-                15
+                10
             },
             {
                 GolfBallLevel.Challenging,
-                30
+                20
             }
         };
 

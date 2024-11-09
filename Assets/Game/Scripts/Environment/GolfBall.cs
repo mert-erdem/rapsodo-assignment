@@ -7,5 +7,7 @@ namespace Game.Scripts.Environment
         [SerializeField] private GolfBallLevel level;
 
         public GolfBallLevel Level => level;
+        
+        public Vector3 GetPosition() => transform.position;
     }
 }
