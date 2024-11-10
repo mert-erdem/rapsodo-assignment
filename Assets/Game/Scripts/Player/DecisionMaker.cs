@@ -83,10 +83,11 @@ namespace Game.Scripts.Player
 
             if (other.CompareTag("Base"))
             {
-                // Golf ball has reached the cart;
-                // Select new golf ball as target
+                // Golf ball has reached the cart
+                // Add points;
+                PointsManager.Instance.AddPoints(_currentTarget.Level);
+                // Select new golf ball as target;
                 SelectTargetGolfBall();
-                // TODO: Add points
             }
         }
     }

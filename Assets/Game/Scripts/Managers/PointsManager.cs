@@ -28,6 +28,8 @@ namespace Game.Scripts.Managers
         
         private readonly Dictionary<GolfBallLevel, float> _golfBallPointsNormalized = new();
 
+        private int _currentPoints = 0;
+
         protected override void Awake()
         {
             base.Awake();
@@ -40,15 +42,15 @@ namespace Game.Scripts.Managers
                 _golfBallPointsNormalized.Add(keyValuePair.Key, (float) keyValuePair.Value / totalPoints);
             }
         }
-
-        public int GetGolfBallPoints(GolfBallLevel golfBallLevel)
-        {
-            return _golfBallPoints[golfBallLevel];
-        }
         
         public float GetGolfBallPointsNormalized(GolfBallLevel golfBallLevel)
         {
             return _golfBallPointsNormalized[golfBallLevel];
+        }
+
+        public void AddPoints(GolfBallLevel golfBallLevel)
+        {
+            _currentPoints += _golfBallPoints[golfBallLevel];
         }
     }
 }
