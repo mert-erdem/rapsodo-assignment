@@ -31,8 +31,6 @@ namespace Game.Scripts.Player
             _currentHealth = Mathf.Max(_currentHealth - HEALTH_DECREASE_DELTA, 0);
             _currentDecreaseDeltaSeconds = HEALTH_DECREASE_DELTA_SECONDS;
             
-            Debug.Log(_currentHealth);
-
             if (_currentHealth == 0)
             {
                 Die();

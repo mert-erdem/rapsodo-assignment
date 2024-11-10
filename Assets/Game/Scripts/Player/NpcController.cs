@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,12 +12,14 @@ namespace Game.Scripts.Player
     public class NpcController : MonoBehaviour
     {
         [SerializeField] private NavMeshAgent agent;
+        [SerializeField] private Health health;
 
         private NavMeshPath _path;
 
         private void Awake()
         {
             _path = new NavMeshPath();
+            health.OnDeath += Stop;
         }
         
         public void SetTargetPos(Vector3 pos)
@@ -39,6 +42,12 @@ namespace Game.Scripts.Player
             }
 
             return pathLength;
+        }
+
+        private void Stop(object sender, EventArgs eventArgs)
+        {
+            // TODO: GAME OVER SITUATION
+            agent.isStopped = true;
         }
     }
 }
