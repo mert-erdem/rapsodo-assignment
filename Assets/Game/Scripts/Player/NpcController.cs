@@ -13,14 +13,14 @@ namespace Game.Scripts.Player
     public sealed class NpcController : MonoBehaviour
     {
         [SerializeField] private NavMeshAgent agent;
-        [SerializeField] private Health health;
+        [SerializeField] private HealthSystem healthSystem;
 
         private NavMeshPath _path;
 
         private void Awake()
         {
             _path = new NavMeshPath();
-            health.OnDeath += Stop;
+            healthSystem.OnDeath += Stop;
         }
         
         public void SetTargetPos(Vector3 pos)

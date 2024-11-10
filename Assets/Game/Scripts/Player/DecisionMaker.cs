@@ -13,7 +13,7 @@ namespace Game.Scripts.Player
     public sealed class DecisionMaker : MonoBehaviour
     {
         [SerializeField] private NpcController npcController;
-        [SerializeField] private Health health;
+        [SerializeField] private HealthSystem healthSystem;
 
         private List<GolfBall> _golfBalls;
 
@@ -34,10 +34,10 @@ namespace Game.Scripts.Player
 
         private void SelectTargetGolfBall(bool random = false)
         {
-            health.SetDecrease(false); // to get exact health value (decreasing health only while walking)
+            healthSystem.SetDecrease(false); // to get exact health value (decreasing health only while walking)
             _currentTarget = random ? _golfBalls[Random.Range(0, _golfBalls.Count)] : FindOptimalGolfBall();
             npcController.SetTargetPos(_currentTarget.GetPosition());
-            health.SetDecrease(true);
+            healthSystem.SetDecrease(true);
         }
 
         private void CalculateGolfBallDistances()
@@ -52,7 +52,7 @@ namespace Game.Scripts.Player
         private GolfBall FindOptimalGolfBall()
         {
             // Balancing weights via current health percentage (distance's importance increase over time)
-            _pointsWeight = health.GetCurrentHealthPercentage();
+            _pointsWeight = healthSystem.GetCurrentHealthPercentage();
             _distanceWeight = 1 - _pointsWeight;
             
             float maxScore = 0;

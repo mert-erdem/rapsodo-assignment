@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Scripts.Player
 {
-    public sealed class Health : MonoBehaviour
+    public sealed class HealthSystem : MonoBehaviour
     {
         [SerializeField] [Range(1f, 100f)] private float health = 100f;
         
@@ -11,7 +11,7 @@ namespace Game.Scripts.Player
         [SerializeField] [Range(0.1f, 100f)] private float healthDecreaseDelta = 5f;
         [SerializeField] [Range(0.1f, 10f)] private float healthDecreaseDeltaSeconds = 1.5f;
         
-        public event EventHandler OnDeath;
+        public event EventHandler OnHealthDecrease, OnDeath;
         
         private float _currentHealth;
         private float _currentDecreaseDeltaSeconds;
@@ -34,13 +34,9 @@ namespace Game.Scripts.Player
             
             if (_currentDecreaseDeltaSeconds > 0) return;
         
-            _currentHealth = Mathf.Max(_currentHealth - healthDecreaseDelta, 0);
-            _currentDecreaseDeltaSeconds = healthDecreaseDeltaSeconds;
+            DecreaseHealth();
             
-            if (_currentHealth == 0)
-            {
-                Die();
-            }
+            if (_currentHealth == 0) Die();
         }
 
         public float GetCurrentHealthPercentage()
@@ -51,6 +47,13 @@ namespace Game.Scripts.Player
         public void SetDecrease(bool value)
         {
             _isDecreasing = value;
+            _currentDecreaseDeltaSeconds = healthDecreaseDeltaSeconds;
+        }
+
+        private void DecreaseHealth()
+        {
+            _currentHealth = Mathf.Max(_currentHealth - healthDecreaseDelta, 0);
+            OnHealthDecrease?.Invoke(this, EventArgs.Empty);
             _currentDecreaseDeltaSeconds = healthDecreaseDeltaSeconds;
         }
 
