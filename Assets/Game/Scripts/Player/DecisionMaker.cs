@@ -33,8 +33,10 @@ namespace Game.Scripts.Player
 
         private void SelectTargetGolfBall(bool random = false)
         {
+            health.SetDecrease(false); // to get exact health value (decreasing health only while walking)
             _currentTarget = random ? _golfBalls[Random.Range(0, _golfBalls.Count)] : FindOptimalGolfBall();
             npcController.SetTargetPos(_currentTarget.GetPosition());
+            health.SetDecrease(true);
         }
 
         private void CalculateGolfBallDistances()
@@ -48,8 +50,6 @@ namespace Game.Scripts.Player
 
         private GolfBall FindOptimalGolfBall()
         {
-            // TODO: Stop decreasing the health
-
             // Balancing weights via current health percentage (distance's importance increase over time)
             _pointsWeight = health.GetCurrentHealthPercentage();
             _distanceWeight = 1 - _pointsWeight;
@@ -80,8 +80,7 @@ namespace Game.Scripts.Player
                 // Later golf cart can be dynamic (caching ignored)
                 npcController.SetTargetPos(EnvironmentManager.Instance.GetGolfCarPosition());
             }
-
-            if (other.CompareTag("Base"))
+            else if (other.CompareTag("Base"))
             {
                 // Golf ball has reached the cart
                 // Add points;
