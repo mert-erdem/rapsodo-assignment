@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Game.Scripts.Environment
@@ -7,6 +8,8 @@ namespace Game.Scripts.Environment
         [SerializeField] private GolfBallLevel level;
 
         public GolfBallLevel Level => level;
+
+        public event EventHandler OnGathered;
 
         private float _distanceToNpc;
         
@@ -20,6 +23,14 @@ namespace Game.Scripts.Environment
         public float GetDistanceToNpc()
         {
             return _distanceToNpc;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                OnGathered?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }

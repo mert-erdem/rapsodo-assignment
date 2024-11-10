@@ -1,9 +1,11 @@
-using Game.Scripts.Environment;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Game.Scripts.Player
 {
+    /// <summary>
+    /// Handles NPC's movement
+    /// </summary>
     [SelectionBase]
     [RequireComponent(typeof(NavMeshAgent))]
     public class NpcController : MonoBehaviour
@@ -15,6 +17,11 @@ namespace Game.Scripts.Player
         private void Awake()
         {
             _path = new NavMeshPath();
+        }
+        
+        public void SetTargetPos(Vector3 pos)
+        {
+            agent.SetDestination(pos);
         }
         
         public float CalculateDistanceToTarget(Vector3 targetPos)
@@ -32,11 +39,6 @@ namespace Game.Scripts.Player
             }
 
             return pathLength;
-        }
-
-        public void SetTarget(GolfBall target)
-        {
-            agent.SetDestination(target.GetPosition());
         }
     }
 }

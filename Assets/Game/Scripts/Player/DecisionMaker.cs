@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Scripts.Environment;
 using Game.Scripts.Managers;
 using UnityEngine;
@@ -11,11 +12,10 @@ namespace Game.Scripts.Player
     /// </summary>
     public class DecisionMaker : MonoBehaviour
     {
-        [SerializeField] private NpcController controller;
+        [SerializeField] private NpcController npcController;
         [SerializeField] private Health health;
 
-        private GolfBall[] _golfBalls;
-        private float[] _scores;
+        private List<GolfBall> _golfBalls;
 
         private float _pointsWeight;
         private float _distanceWeight;
@@ -24,30 +24,29 @@ namespace Game.Scripts.Player
 
         private void Start()
         {
-            _golfBalls = GolfBallsManager.Instance.GetGolfBalls();
-            _scores = new float[_golfBalls.Length];
+            _golfBalls = EnvironmentManager.Instance.GetGolfBalls();
             
             CalculateGolfBallDistances();
-            // TODO: First choose can be random
-            SelectTargetGolfBall();
+            // First choose is random to creating different cases
+            SelectTargetGolfBall(true);
         }
 
-        private void SelectTargetGolfBall()
+        private void SelectTargetGolfBall(bool random = false)
         {
-            CalculateScores();
-            controller.SetTarget(_currentTarget);
+            _currentTarget = random ? _golfBalls[Random.Range(0, _golfBalls.Count)] : FindOptimalGolfBall();
+            npcController.SetTargetPos(_currentTarget.GetPosition());
         }
 
         private void CalculateGolfBallDistances()
         {
-            for (int i = 0; i < _golfBalls.Length; i++)
+            for (int i = 0; i < _golfBalls.Count; i++)
             {
-                float distance = controller.CalculateDistanceToTarget(_golfBalls[i].GetPosition());
+                float distance = npcController.CalculateDistanceToTarget(_golfBalls[i].GetPosition());
                 _golfBalls[i].SetDistanceToNpc(distance);
             }
         }
 
-        private void CalculateScores()
+        private GolfBall FindOptimalGolfBall()
         {
             // TODO: Stop decreasing the health
 
@@ -56,17 +55,38 @@ namespace Game.Scripts.Player
             _distanceWeight = 1 - _pointsWeight;
             
             float maxScore = 0;
+            GolfBall selectedGolfBall = _golfBalls[0];
             
-            for (int i = 0; i < _scores.Length; i++)
+            for (int i = 0; i < _golfBalls.Count; i++)
             {
-                _scores[i] = _pointsWeight * PointsManager.Instance.GetGolfBallPointsNormalized(_golfBalls[i].Level) +
+                float score = _pointsWeight * PointsManager.Instance.GetGolfBallPointsNormalized(_golfBalls[i].Level) +
                              _distanceWeight * (1 / _golfBalls[i].GetDistanceToNpc());
                 
-                if (_scores[i] >= maxScore)
+                if (score >= maxScore)
                 {
-                    maxScore = _scores[i];
-                    _currentTarget = _golfBalls[i];
+                    maxScore = score;
+                    selectedGolfBall = _golfBalls[i];
                 }
+            }
+
+            return selectedGolfBall;
+        }
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Target"))
+            {
+                // Golf ball has been gathered
+                // Later golf cart can be dynamic (caching ignored)
+                npcController.SetTargetPos(EnvironmentManager.Instance.GetGolfCarPosition());
+            }
+
+            if (other.CompareTag("Base"))
+            {
+                // Golf ball has reached the cart;
+                // Select new golf ball as target
+                SelectTargetGolfBall();
+                // TODO: Add points
             }
         }
     }

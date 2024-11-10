@@ -8,14 +8,15 @@ namespace Game.Scripts.Player
         [SerializeField] [Range(1f, 100f)] private float health = 100f;
         public event EventHandler OnDeath;
 
-        private const float HEALTH_DECREASE_DELTA = 1.5f;
-        private const float HEALTH_DECREASE_DELTA_SECONDS = 1f;
+        private const float HEALTH_DECREASE_DELTA = 5f;
+        private const float HEALTH_DECREASE_DELTA_SECONDS = 1.5f;
         
         private float _currentHealth;
         private float _currentDecreaseDeltaSeconds;
 
         private void Awake()
         {
+            _currentHealth = health;
             _currentDecreaseDeltaSeconds = HEALTH_DECREASE_DELTA_SECONDS;
         }
 
@@ -29,6 +30,8 @@ namespace Game.Scripts.Player
         
             _currentHealth = Mathf.Max(_currentHealth - HEALTH_DECREASE_DELTA, 0);
             _currentDecreaseDeltaSeconds = HEALTH_DECREASE_DELTA_SECONDS;
+            
+            Debug.Log(_currentHealth);
 
             if (_currentHealth == 0)
             {
