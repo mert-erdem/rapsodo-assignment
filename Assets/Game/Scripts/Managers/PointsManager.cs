@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Scripts.Core;
@@ -29,6 +30,7 @@ namespace Game.Scripts.Managers
         private readonly Dictionary<GolfBallLevel, float> _golfBallPointsNormalized = new();
 
         private int _currentPoints = 0;
+        public event EventHandler<int> OnCurrentPointsChanged;
 
         protected override void Awake()
         {
@@ -51,6 +53,7 @@ namespace Game.Scripts.Managers
         public void AddPoints(GolfBallLevel golfBallLevel)
         {
             _currentPoints += _golfBallPoints[golfBallLevel];
+            OnCurrentPointsChanged?.Invoke(this, _currentPoints);
         }
     }
 }

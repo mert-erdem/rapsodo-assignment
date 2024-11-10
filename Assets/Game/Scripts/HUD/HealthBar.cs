@@ -3,7 +3,7 @@ using Game.Scripts.Player;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.Scripts.GUI
+namespace Game.Scripts.HUD
 {
     public class HealthBar : MonoBehaviour
     {
@@ -21,7 +21,7 @@ namespace Game.Scripts.GUI
             healthSystem.OnHealthDecrease += HealthSystem_OnHealthDecrease;
             healthSystem.OnDeath += HealthSystem_OnDeath;
             
-            UpdateHealthImage();
+            UpdateHealthImage(healthSystem.GetCurrentHealthPercentage());
         }
 
         private void LateUpdate()
@@ -29,9 +29,9 @@ namespace Game.Scripts.GUI
             transform.rotation = Quaternion.identity;
         }
 
-        private void HealthSystem_OnHealthDecrease(object sender, EventArgs e)
+        private void HealthSystem_OnHealthDecrease(object sender, float currentHealthPercentage)
         {
-            UpdateHealthImage();
+            UpdateHealthImage(currentHealthPercentage);
         }
     
         private void HealthSystem_OnDeath(object sender, EventArgs e)
@@ -40,9 +40,9 @@ namespace Game.Scripts.GUI
             imageBackground.enabled = false;
         }
 
-        private void UpdateHealthImage()
+        private void UpdateHealthImage(float value)
         {
-            imageForeground.fillAmount = healthSystem.GetCurrentHealthPercentage();
+            imageForeground.fillAmount = value;
         }
 
         private void OnDestroy()

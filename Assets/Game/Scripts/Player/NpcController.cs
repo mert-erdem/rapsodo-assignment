@@ -1,5 +1,6 @@
 using System;
 using Game.Scripts.Managers;
+using Game.Scripts.UI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,9 +21,16 @@ namespace Game.Scripts.Player
         private void Awake()
         {
             _path = new NavMeshPath();
-            healthSystem.OnDeath += Stop;
+            healthSystem.OnHealthDecrease += HealthSystem_OnHealthDecrease;
+            healthSystem.OnDeath += HealthSystem_OnDeath;
         }
-        
+
+        private void Start()
+        {
+            // Update UI
+            CanvasController.Instance.UpdateHealthBar(healthSystem.GetCurrentHealthPercentage());
+        }
+
         public void SetTargetPos(Vector3 pos)
         {
             agent.SetDestination(pos);
@@ -45,10 +53,21 @@ namespace Game.Scripts.Player
             return pathLength;
         }
 
-        private void Stop(object sender, EventArgs eventArgs)
+        private void HealthSystem_OnDeath(object sender, EventArgs eventArgs)
         {
             agent.isStopped = true;
             GameManager.Instance.OnGameOver?.Invoke();
+        }
+
+        private void HealthSystem_OnHealthDecrease(object sender, float currentHealthPercentage)
+        {
+            // Update UI
+            CanvasController.Instance.UpdateHealthBar(currentHealthPercentage);
+        }
+
+        private void OnDestroy()
+        {
+            healthSystem.OnDeath -= HealthSystem_OnDeath;
         }
     }
 }

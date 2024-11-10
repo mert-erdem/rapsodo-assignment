@@ -35,7 +35,8 @@ namespace Game.Scripts.Managers
         {
             GolfBall golfBall = sender as GolfBall;
             golfBalls.Remove(golfBall);
-            Destroy(golfBall.gameObject);
+            
+            if (golfBall != null) Destroy(golfBall.gameObject);
         }
     }
 }

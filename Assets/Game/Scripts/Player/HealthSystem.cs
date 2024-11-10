@@ -11,7 +11,8 @@ namespace Game.Scripts.Player
         [SerializeField] [Range(0.1f, 100f)] private float healthDecreaseDelta = 5f;
         [SerializeField] [Range(0.1f, 10f)] private float healthDecreaseDeltaSeconds = 1.5f;
         
-        public event EventHandler OnHealthDecrease, OnDeath;
+        public event EventHandler<float> OnHealthDecrease;
+        public event EventHandler OnDeath;
         
         private float _currentHealth;
         private float _currentDecreaseDeltaSeconds;
@@ -33,6 +34,8 @@ namespace Game.Scripts.Player
             _currentDecreaseDeltaSeconds -= Time.deltaTime;
             
             if (_currentDecreaseDeltaSeconds > 0) return;
+            
+            Debug.Log(_currentHealth);
         
             DecreaseHealth();
             
@@ -53,7 +56,7 @@ namespace Game.Scripts.Player
         private void DecreaseHealth()
         {
             _currentHealth = Mathf.Max(_currentHealth - healthDecreaseDelta, 0);
-            OnHealthDecrease?.Invoke(this, EventArgs.Empty);
+            OnHealthDecrease?.Invoke(this, GetCurrentHealthPercentage());
             _currentDecreaseDeltaSeconds = healthDecreaseDeltaSeconds;
         }
 
