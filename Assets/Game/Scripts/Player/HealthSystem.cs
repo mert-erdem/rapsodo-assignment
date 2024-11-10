@@ -16,7 +16,6 @@ namespace Game.Scripts.Player
         
         private float _currentHealth;
         private float _currentDecreaseDeltaSeconds;
-
         private bool _isDecreasing;
 
         private void Awake()
@@ -35,8 +34,6 @@ namespace Game.Scripts.Player
             
             if (_currentDecreaseDeltaSeconds > 0) return;
             
-            Debug.Log(_currentHealth);
-        
             DecreaseHealth();
             
             if (_currentHealth == 0) Die();
