@@ -7,6 +7,7 @@ namespace Game.Scripts.UI
     public sealed class CanvasController : Singleton<CanvasController>
     {
         [SerializeField] private PanelInGame panelInGame;
+        [SerializeField] private PanelMainMenu panelMainMenu;
 
         private void Start()
         {
@@ -20,7 +21,13 @@ namespace Game.Scripts.UI
 
         private void OnGameStart()
         {
+            panelMainMenu.gameObject.SetActive(false);
             panelInGame.gameObject.SetActive(true);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Instance.OnGameStart -= OnGameStart;
         }
     }
 }

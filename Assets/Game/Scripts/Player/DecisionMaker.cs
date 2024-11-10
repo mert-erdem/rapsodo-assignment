@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Scripts.Environment;
 using Game.Scripts.Managers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Game.Scripts.Player
 {
@@ -25,11 +26,7 @@ namespace Game.Scripts.Player
         private void Start()
         {
             _golfBalls = EnvironmentManager.Instance.GetGolfBalls();
-            
-            CalculateGolfBallDistances();
-            // First choose is random to creating different cases
-            SelectTargetGolfBall(true);
-            GameManager.Instance.OnGameStart?.Invoke();
+            GameManager.Instance.OnGameStart += OnGameStart;
         }
 
         private void SelectTargetGolfBall(bool random = false)
@@ -72,6 +69,13 @@ namespace Game.Scripts.Player
 
             return selectedGolfBall;
         }
+
+        private void OnGameStart()
+        {
+            CalculateGolfBallDistances();
+            // First choose is random to creating different cases
+            SelectTargetGolfBall(true);
+        }
         
         private void OnTriggerEnter(Collider other)
         {
@@ -89,6 +93,11 @@ namespace Game.Scripts.Player
                 // Select new golf ball as target;
                 SelectTargetGolfBall();
             }
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.Instance.OnGameStart -= OnGameStart;
         }
     }
 }
