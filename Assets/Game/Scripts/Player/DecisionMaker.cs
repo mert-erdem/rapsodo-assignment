@@ -10,7 +10,7 @@ namespace Game.Scripts.Player
     /// Chooses a golf ball for NPC to gather with using weighted distance algorithm.
     /// Also uses NPC's health percentage in balancing weights of the properties.
     /// </summary>
-    public class DecisionMaker : MonoBehaviour
+    public sealed class DecisionMaker : MonoBehaviour
     {
         [SerializeField] private NpcController npcController;
         [SerializeField] private Health health;
@@ -29,6 +29,7 @@ namespace Game.Scripts.Player
             CalculateGolfBallDistances();
             // First choose is random to creating different cases
             SelectTargetGolfBall(true);
+            GameManager.Instance.OnGameStart?.Invoke();
         }
 
         private void SelectTargetGolfBall(bool random = false)

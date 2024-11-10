@@ -1,4 +1,5 @@
 using System;
+using Game.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,7 +10,7 @@ namespace Game.Scripts.Player
     /// </summary>
     [SelectionBase]
     [RequireComponent(typeof(NavMeshAgent))]
-    public class NpcController : MonoBehaviour
+    public sealed class NpcController : MonoBehaviour
     {
         [SerializeField] private NavMeshAgent agent;
         [SerializeField] private Health health;
@@ -46,8 +47,8 @@ namespace Game.Scripts.Player
 
         private void Stop(object sender, EventArgs eventArgs)
         {
-            // TODO: GAME OVER SITUATION
             agent.isStopped = true;
+            GameManager.Instance.OnGameOver?.Invoke();
         }
     }
 }
