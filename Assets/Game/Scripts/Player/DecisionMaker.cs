@@ -90,11 +90,11 @@ namespace Game.Scripts.Player
             {
                 // Golf ball has been gathered
                 // Later golf cart can be dynamic (caching ignored)
-                npcController.SetTargetPos(EnvironmentManager.Instance.GetGolfCarPosition());
+                npcController.SetTargetPos(EnvironmentManager.Instance.GetGolfCartPosition());
             }
             else if (other.CompareTag("Base"))
             {
-                // Golf ball has reached the cart
+                // Golf ball has reached the golf cart
                 // Add points;
                 PointsManager.Instance.AddPoints(_currentTarget.Level);
                 // Select new golf ball as target;

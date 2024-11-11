@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Game.Scripts.UI
 {
+    /// <summary>
+    /// Base UI controller for panels.
+    /// </summary>
     public sealed class CanvasController : Singleton<CanvasController>
     {
         [SerializeField] private PanelMainMenu panelMainMenu;

@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using Game.Scripts.Core;
 using Game.Scripts.Environment;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Scripts.Managers
 {
+    /// <summary>
+    /// Controls golf balls and golf cart
+    /// </summary>
     public sealed class EnvironmentManager : Singleton<EnvironmentManager>
     {
-        [SerializeField] private Transform golfCarInteractionTransform;
+        [SerializeField] private Transform golfCartInteractionTransform;
         [SerializeField] private List<GolfBall> golfBalls;
         
         protected override void Awake()
@@ -26,9 +30,9 @@ namespace Game.Scripts.Managers
             return golfBalls;
         }
 
-        public Vector3 GetGolfCarPosition()
+        public Vector3 GetGolfCartPosition()
         {
-            return golfCarInteractionTransform.transform.position;
+            return golfCartInteractionTransform.transform.position;
         }
 
         private void GolfBall_OnGathered(object sender, EventArgs eventArgs)
