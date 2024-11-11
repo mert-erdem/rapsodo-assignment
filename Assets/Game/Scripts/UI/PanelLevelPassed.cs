@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Scripts.UI
 {
-    public sealed class PanelGameOver : MonoBehaviour
+    public sealed class PanelLevelPassed : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI textPoints;
 
@@ -13,7 +13,7 @@ namespace Game.Scripts.UI
             textPoints.text = "points: " + PointsManager.Instance.GetCurrentPoints();
         }
 
-        public void OnButtonRestartClick()
+        public void OnButtonContinueClick()
         {
             GameManager.RestartLevel();
         }

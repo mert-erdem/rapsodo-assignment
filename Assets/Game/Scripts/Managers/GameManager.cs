@@ -6,9 +6,9 @@ namespace Game.Scripts.Managers
 {
     public sealed class GameManager : Singleton<GameManager>
     {
-        public Action OnGameStart, OnGameOver;
+        public Action OnGameStart, OnGameOver, OnLevelPass;
 
-        public void RestartLevel()
+        public static void RestartLevel()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }

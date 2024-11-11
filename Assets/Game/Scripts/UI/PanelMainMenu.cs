@@ -7,6 +7,7 @@ namespace Game.Scripts.UI
     {
         public void OnButtonStartPointerDown()
         {
+            // GAME START
             GameManager.Instance.OnGameStart?.Invoke();
         }
     }

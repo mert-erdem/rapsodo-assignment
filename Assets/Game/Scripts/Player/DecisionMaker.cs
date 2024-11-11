@@ -31,6 +31,13 @@ namespace Game.Scripts.Player
 
         private void SelectTargetGolfBall(bool random = false)
         {
+            if (_golfBalls.Count == 0) // GAME OVER
+            {
+                GameManager.Instance.OnLevelPass?.Invoke();
+                
+                return;
+            }
+            
             healthSystem.SetDecrease(false); // to get exact health value (decreasing health only while walking)
             _currentTarget = random ? _golfBalls[Random.Range(0, _golfBalls.Count)] : FindOptimalGolfBall();
             npcController.SetTargetPos(_currentTarget.GetPosition());

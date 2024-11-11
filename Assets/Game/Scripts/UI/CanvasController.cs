@@ -9,17 +9,21 @@ namespace Game.Scripts.UI
         [SerializeField] private PanelMainMenu panelMainMenu;
         [SerializeField] private PanelInGame panelInGame;
         [SerializeField] private PanelGameOver panelGameOver;
+        [SerializeField] private PanelLevelPassed panelLevelPassed;
 
         private void Start()
         {
             GameManager.Instance.OnGameStart += OnGameStart;
             GameManager.Instance.OnGameOver += OnGameOver;
+            GameManager.Instance.OnLevelPass += OnLevelPass;
         }
 
         public void UpdateHealthBar(float currentHealthPercentage)
         {
             panelInGame.UpdateHealthBar(currentHealthPercentage);
         }
+
+        #region Event Handler Methods
 
         private void OnGameStart()
         {
@@ -33,10 +37,19 @@ namespace Game.Scripts.UI
             panelGameOver.gameObject.SetActive(true);
         }
 
+        private void OnLevelPass()
+        {
+            panelInGame.gameObject.SetActive(false);
+            panelLevelPassed.gameObject.SetActive(true);
+        }
+
+        #endregion
+        
         private void OnDestroy()
         {
             GameManager.Instance.OnGameStart -= OnGameStart;
             GameManager.Instance.OnGameOver -= OnGameOver;
+            GameManager.Instance.OnLevelPass += OnLevelPass;
         }
     }
 }
