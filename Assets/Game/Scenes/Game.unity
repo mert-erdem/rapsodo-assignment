@@ -898,7 +898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7adb6ecde2a4828ad931276c2b67c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  golfCarInteractionTransform: {fileID: 687726183}
+  golfCartInteractionTransform: {fileID: 687726183}
   golfBalls:
   - {fileID: 1192215081}
   - {fileID: 1923486435}
