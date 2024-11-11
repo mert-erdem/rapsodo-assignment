@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Game.Scripts.HUD
 {
-    public class HealthBar : MonoBehaviour
+    public class HealthBarHUD : MonoBehaviour
     {
         [SerializeField] private Image imageForeground, imageBackground;
         [SerializeField] private HealthSystem healthSystem;
