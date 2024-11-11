@@ -3,6 +3,8 @@
 Prototyping an NPC that walks to gather randomly distributed golf balls on the map while returning to a stable golf cart for scoring. If all the balls are gathered, the player wins.
 ## The NPC
 NavMesh implemented for pathfinding. The NPC is a NavMeshAgent that has health mechanic. Its health decreases over time (decreasing stops briefly only when it reaches the golf cart).
+## Golf Balls
+There are three types of golf balls (Level 1, 2, 3). They can be recognized via their colors. As the level of the ball increases, its value increases, and its reachability decreases.
 ## Decision-Making Algorithm
 The NPC uses an algorithm that includes a weighted distance calculation to choose a golf ball as its target. There are two weighted properties: The golf ball's point value and its distance. The weights of these properties constantly change based on the NPC's health. As health decreases, the weight given to distance increases, while the weight given to the golf ball's value decreases. At the beginning of the game, the first selection is random to create varied and balanced situations.
 ## Platform
